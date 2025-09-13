@@ -26,15 +26,12 @@ export default function Header() {
     };
 
     if (isHomePage) {
-      // Set initial state
       handleScroll();
-      
       window.addEventListener('scroll', handleScroll);
       return () => {
         window.removeEventListener('scroll', handleScroll);
       };
     } else {
-      // On other pages, header is always "scrolled"
       setScrolled(true);
     }
   }, [isHomePage]);
@@ -42,14 +39,23 @@ export default function Header() {
   const headerClasses = cn(
     "sticky top-0 z-50 w-full border-b transition-colors duration-300",
     isHomePage && !scrolled
-      ? "bg-transparent border-transparent"
+      ? "bg-black/20 border-transparent"
       : "bg-navbar/95 backdrop-blur supports-[backdrop-filter]:bg-navbar/60 border-border"
   );
   
-  const navLinkBaseClasses = "transition-colors";
-  const transparentHeaderLinkClasses = "text-white hover:bg-white/10 hover:text-white";
-  const solidHeaderLinkClasses = "text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground";
+  const navLinkClasses = cn(
+    "transition-colors",
+    isHomePage && !scrolled
+      ? "text-white hover:text-white/80"
+      : "text-primary-foreground hover:text-primary-foreground/80"
+  );
   
+  const activeNavLinkClasses = cn(
+    isHomePage && !scrolled
+      ? "bg-white/10 hover:bg-white/20"
+      : "bg-background/10 hover:bg-background/20"
+  );
+
   const logoClasses = cn(
       "flex items-center gap-2 text-2xl font-bold font-headline transition-colors",
        isHomePage && !scrolled ? "text-white hover:text-white/80" : "text-primary-foreground hover:text-primary-foreground/80"
@@ -69,12 +75,10 @@ export default function Header() {
               <Button 
                 key={link.href} 
                 asChild 
-                variant={isActive ? "secondary" : "ghost"} 
+                variant={"ghost"} 
                 className={cn(
-                  navLinkBaseClasses,
-                  isHomePage && !scrolled ? transparentHeaderLinkClasses : solidHeaderLinkClasses,
-                  isActive && isHomePage && !scrolled && "bg-white/20 text-white",
-                  isActive && scrolled && "bg-background/20 text-white"
+                  navLinkClasses,
+                  isActive && activeNavLinkClasses
                 )}
               >
                 <Link href={link.href}>
