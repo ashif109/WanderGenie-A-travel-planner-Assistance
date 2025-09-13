@@ -30,6 +30,8 @@ export default function Header() {
 
     if (isHomePage) {
       window.addEventListener('scroll', handleScroll);
+      // Set initial state
+      handleScroll();
       return () => {
         window.removeEventListener('scroll', handleScroll);
       };
@@ -38,15 +40,13 @@ export default function Header() {
 
   const headerClasses = cn(
     "sticky top-0 z-50 w-full border-b transition-colors duration-300",
-    isHomePage
-      ? scrolled
-        ? "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-border"
-        : "bg-transparent border-transparent"
-      : "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+    isHomePage && !scrolled
+      ? "bg-transparent border-transparent"
+      : "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-border"
   );
   
   const navLinkClasses = cn(
-    isHomePage && !scrolled && "text-white hover:bg-white/10 hover:text-white"
+     isHomePage && !scrolled ? "text-white hover:bg-white/10 hover:text-white" : ""
   );
   
   const logoClasses = cn(
