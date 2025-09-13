@@ -22,36 +22,33 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Check if user has scrolled more than 10px
       setScrolled(window.scrollY > 10);
     };
 
     if (isHomePage) {
       window.addEventListener('scroll', handleScroll);
-      // Clean up the event listener on component unmount
       return () => {
         window.removeEventListener('scroll', handleScroll);
       };
+    } else {
+      setScrolled(true);
     }
   }, [isHomePage]);
 
-  // Determine if the header should have a transparent background
-  const isTransparent = isHomePage && !scrolled;
-
   const headerClasses = cn(
     "sticky top-0 z-50 w-full border-b transition-colors duration-300",
-    isTransparent
+    isHomePage && !scrolled
       ? "bg-transparent border-transparent"
       : "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-border"
   );
   
   const navLinkClasses = cn(
-     isTransparent ? "text-white hover:bg-white/10 hover:text-white" : ""
+     isHomePage && !scrolled ? "text-white hover:bg-white/10 hover:text-white" : ""
   );
   
   const logoClasses = cn(
       "flex items-center gap-2 text-2xl font-bold font-headline transition-colors",
-       isTransparent ? "text-white hover:text-white/80" : "text-primary hover:text-primary/80"
+       isHomePage && !scrolled ? "text-white hover:text-white/80" : "text-primary hover:text-primary/80"
   );
 
   return (
@@ -65,7 +62,7 @@ export default function Header() {
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
-              <Button key={link.href} asChild variant={isActive ? "secondary" : "ghost"} className={cn(navLinkClasses, isActive && !isTransparent ? "text-primary-foreground bg-primary" : "")}>
+              <Button key={link.href} asChild variant={isActive ? "secondary" : "ghost"} className={cn(navLinkClasses, isActive && scrolled ? "text-primary-foreground bg-primary" : "")}>
                 <Link href={link.href}>
                   <link.icon className="mr-2 h-4 w-4" />
                   {link.label}
