@@ -111,11 +111,12 @@ export default function TranslatorPage() {
         let description = 'An unknown error occurred. Please try again.';
         
         // Check for specific SpeechRecognition errors
-        if (error && error.error) {
-            if (error.error === 'no-speech') {
+        if (error && (error.error || error.name)) {
+            const errorCode = error.error || error.name;
+            if (errorCode === 'no-speech') {
                 title = 'No Speech Detected';
                 description = 'I didn\'t hear anything. Please make sure your microphone is working and try speaking again.';
-            } else if (error.error === 'not-allowed' || error.name === 'NotAllowedError') {
+            } else if (errorCode === 'not-allowed' || errorCode === 'NotAllowedError') {
                 title = 'Microphone Access Denied';
                 description = 'Please allow microphone access in your browser settings to use the translator.';
             }
