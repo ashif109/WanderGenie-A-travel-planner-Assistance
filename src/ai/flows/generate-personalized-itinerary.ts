@@ -16,6 +16,7 @@ const GeneratePersonalizedItineraryInputSchema = z.object({
   destination: z.string().describe('The desired travel destination.'),
   preferences: z.string().describe('The user\'s interests and preferences (e.g., historical sites, beaches, nightlife).'),
   duration: z.number().describe('The duration of the trip in days.'),
+  budget: z.enum(['budget-friendly', 'balanced', 'luxury']).describe('The user\'s budget preference for the trip.'),
 });
 export type GeneratePersonalizedItineraryInput = z.infer<typeof GeneratePersonalizedItineraryInputSchema>;
 
@@ -48,6 +49,7 @@ User Request:
 - Destination: {{{destination}}}
 - Preferences: {{{preferences}}}
 - Duration: {{{duration}}} days
+- Budget: {{{budget}}}
 
 Follow these rules strictly:
 1.  **Output Format**: Generate a strict JSON array where each object represents a single day. Do not output any text outside of the JSON array.
@@ -67,6 +69,7 @@ Follow these rules strictly:
     -   Include specific **time allocations** for each activity.
     -   Add **offbeat/secret places**, local food/cafe recommendations, and interactive tips (e.g., best photo spots, reservation advice).
     -   Keep the tone **readable and fun**; avoid heavy, dense text.
+    -   **Tailor all recommendations** (activities, food, accommodation) to the specified **budget**. For 'budget-friendly', suggest free activities, street food, and hostels. For 'luxury', suggest private tours, fine dining, and 5-star hotels. 'Balanced' should be a mix.
 
 Example of a single day object:
 {

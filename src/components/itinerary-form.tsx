@@ -6,6 +6,7 @@ import * as z from 'zod';
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,7 +17,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
-import { MapPin, CalendarDays, Star, Plane, Loader2 } from 'lucide-react';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { MapPin, CalendarDays, Star, Plane, Loader2, Wallet, Leaf, Gem, Briefcase } from 'lucide-react';
 
 const formSchema = z.object({
   destination: z.string().min(2, {
@@ -26,6 +28,7 @@ const formSchema = z.object({
     message: 'Tell us a bit more about your interests.',
   }),
   duration: z.number().min(1).max(30),
+  budget: z.enum(['budget-friendly', 'balanced', 'luxury']).default('balanced'),
 });
 
 export type ItineraryFormValues = z.infer<typeof formSchema>;
@@ -42,6 +45,7 @@ export function ItineraryForm({ onSubmit, isLoading }: ItineraryFormProps) {
       destination: '',
       preferences: '',
       duration: 7,
+      budget: 'balanced',
     },
   });
 
@@ -89,6 +93,51 @@ export function ItineraryForm({ onSubmit, isLoading }: ItineraryFormProps) {
                       rows={4}
                       {...field}
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="budget"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel className="flex items-center gap-2 text-lg"><Wallet className="h-5 w-5" /> Budget Style</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="grid grid-cols-3 gap-4"
+                    >
+                      <FormItem>
+                        <FormControl>
+                          <RadioGroupItem value="budget-friendly" id="budget-friendly" className="sr-only" />
+                        </FormControl>
+                        <FormLabel htmlFor="budget-friendly" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+                          <Leaf className="mb-3 h-6 w-6" />
+                          Budget
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem>
+                        <FormControl>
+                          <RadioGroupItem value="balanced" id="balanced" className="sr-only" />
+                        </FormControl>
+                        <FormLabel htmlFor="balanced" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+                          <Briefcase className="mb-3 h-6 w-6" />
+                          Balanced
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem>
+                        <FormControl>
+                           <RadioGroupItem value="luxury" id="luxury" className="sr-only" />
+                        </FormControl>
+                        <FormLabel htmlFor="luxury" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+                           <Gem className="mb-3 h-6 w-6" />
+                           Luxury
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
