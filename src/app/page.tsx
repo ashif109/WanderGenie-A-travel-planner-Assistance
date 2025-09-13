@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { generatePersonalizedItinerary, GeneratePersonalizedItineraryOutput } from '@/ai/flows/generate-personalized-itinerary';
 import { ItineraryForm, ItineraryFormValues } from '@/components/itinerary-form';
 import ItineraryDisplay from '@/components/itinerary-display';
@@ -10,6 +9,7 @@ import ItinerarySkeleton from '@/components/itinerary-skeleton';
 import { useToast } from "@/hooks/use-toast";
 import { Sparkles } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import Header from '@/components/header';
 
 export default function Home() {
   const [itinerary, setItinerary] = useState<GeneratePersonalizedItineraryOutput | null>(null);
@@ -38,6 +38,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background font-body">
+      <Header />
       <main className="flex-grow">
         <section className="relative h-96 flex items-center justify-center text-center text-white shadow-lg">
           {heroImage && (
@@ -53,7 +54,6 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/50" />
           <div className="relative z-10 flex flex-col items-center p-4">
             <div className="flex items-center gap-4 mb-4">
-              <Sparkles className="h-16 w-16 text-primary" />
               <h1 className="text-6xl md:text-8xl font-headline font-extrabold tracking-tight drop-shadow-lg">
                 WanderGenie
               </h1>
@@ -84,11 +84,6 @@ export default function Home() {
         </div>
       </main>
       <footer className="text-center p-8 text-muted-foreground">
-        <div className="flex justify-center gap-6">
-          <Link href="/" className="hover:text-primary">Home</Link>
-          <Link href="/explore" className="hover:text-primary">Explore</Link>
-          <Link href="/documents" className="hover:text-primary">My Documents</Link>
-        </div>
         <p className="mt-4">Powered by WanderGenie</p>
       </footer>
     </div>

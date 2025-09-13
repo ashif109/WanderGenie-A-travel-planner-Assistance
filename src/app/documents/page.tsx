@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { FileText, Upload, Trash2, Home } from 'lucide-react';
+import { FileText, Upload, Trash2 } from 'lucide-react';
+import Header from '@/components/header';
 
 interface Document {
   id: string;
@@ -55,16 +56,7 @@ export default function DocumentsPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background font-body">
-       <header className="p-4 border-b">
-         <div className="container mx-auto flex justify-between items-center">
-             <Link href="/" className="flex items-center gap-2 text-2xl font-bold font-headline text-primary hover:opacity-80">
-                WanderGenie
-             </Link>
-            <Button asChild variant="outline">
-                <Link href="/"><Home className="mr-2 h-4 w-4"/> Back to Planner</Link>
-            </Button>
-         </div>
-       </header>
+       <Header />
        <main className="flex-grow container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
             <Card className="shadow-xl border-2 border-primary/20 rounded-xl">
