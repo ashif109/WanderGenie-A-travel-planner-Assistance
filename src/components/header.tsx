@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Bot, FileText, Globe, Home, Sparkles } from 'lucide-react';
+import { Bot, FileText, Globe, Home, Mic, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 import { useEffect, useState } from 'react';
@@ -12,6 +12,7 @@ const navLinks = [
   { href: '/', label: 'Home', icon: Home },
   { href: '/explore', label: 'Explore', icon: Globe },
   { href: '/documents', label: 'My Documents', icon: FileText },
+  { href: '/translator', label: 'Translator', icon: Mic },
   { href: '/chat', label: 'AI Chat', icon: Bot },
 ];
 
@@ -68,7 +69,7 @@ export default function Header() {
           <Sparkles className="h-6 w-6" />
           WanderGenie
         </Link>
-        <nav className="hidden md:flex items-center gap-2">
+        <nav className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
