@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { translateAndSpeak } from '@/ai/flows/translate-and-speak';
+import { transcribeAudio } from '@/ai/flows/transcribe-audio';
 import { Loader2, Mic, MicOff, Languages, Volume2, Square, Bot } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -50,38 +51,38 @@ export default function TranslatorPage() {
 
             mediaRecorderRef.current.onstop = async () => {
                 setStatus('transcribing');
-                
-                if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
-                    handleError({message: 'Speech recognition is not supported in this browser.'}, 'Browser Not Supported');
-                    return;
-                }
+                toast({ title: "Processing audio...", description: "Please wait while we transcribe your speech." });
 
-                const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-                recognition.lang = 'en-US'; 
-                recognition.interimResults = false;
+                const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
                 
-                recognition.onresult = async (event) => {
-                    const speechToText = event.results[0][0].transcript;
-                    setTranscribedText(speechToText);
-                    setStatus('translating');
+                // Convert Blob to Base64 Data URI
+                const reader = new FileReader();
+                reader.readAsDataURL(audioBlob);
+                reader.onloadend = async () => {
+                    const base64Audio = reader.result as string;
+                    
                     try {
-                        const result = await translateAndSpeak({ text: speechToText, targetLanguage });
-                        setTranslatedText(result.translatedText);
-                        setAudioDataUri(result.audioDataUri);
+                        // 1. Transcribe audio
+                        const transcriptionResult = await transcribeAudio({ audioDataUri: base64Audio });
+                        const speechToText = transcriptionResult.transcription;
+
+                        if (!speechToText) {
+                           throw new Error('Transcription returned no text.');
+                        }
+                        
+                        setTranscribedText(speechToText);
+                        
+                        // 2. Translate and get TTS
+                        setStatus('translating');
+                        const translationResult = await translateAndSpeak({ text: speechToText, targetLanguage });
+                        setTranslatedText(translationResult.translatedText);
+                        setAudioDataUri(translationResult.audioDataUri);
                         setStatus('speaking');
+
                     } catch (error) {
-                        handleError(error, 'Translation/TTS Failed');
+                        handleError(error, 'Failed to process audio');
                     }
                 };
-
-                recognition.onerror = (event: any) => {
-                     handleError(event, 'Speech recognition failed');
-                };
-                
-                recognition.start();
-
-                 toast({ title: "Processing audio...", description: "Please wait while we transcribe your speech." });
-
             };
 
             mediaRecorderRef.current.start();
@@ -100,18 +101,9 @@ export default function TranslatorPage() {
     const handleError = (error: any, title: string) => {
         console.error(title, error);
         
-        const errorCode = error?.error || error?.name;
+        const errorCode = error?.name;
 
-        if (errorCode === 'no-speech') {
-            toast({
-                title: 'No Speech Detected',
-                description: "I didn't hear anything. Please make sure your microphone is working and try again.",
-            });
-            setStatus('idle');
-            return;
-        }
-
-        if (errorCode === 'not-allowed' || errorCode === 'NotAllowedError') {
+        if (errorCode === 'NotAllowedError') {
             toast({
                 title: 'Microphone Access Denied',
                 description: 'Please allow microphone access in your browser settings to use the translator.',
@@ -235,13 +227,4 @@ export default function TranslatorPage() {
         </div>
     );
 }
-
-// Add this to your global types or a declarations file if you have one
-declare global {
-  interface Window {
-    SpeechRecognition: any;
-    webkitSpeechRecognition: any;
-  }
-}
-
     
