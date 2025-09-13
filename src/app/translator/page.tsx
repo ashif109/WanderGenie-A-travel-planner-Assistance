@@ -50,22 +50,15 @@ export default function TranslatorPage() {
 
             mediaRecorderRef.current.onstop = async () => {
                 setStatus('transcribing');
-                const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
                 
-                // For simplicity, we are using browser's SpeechRecognition API for transcription
-                // A more robust solution might use a dedicated Speech-to-Text API
                 if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
                     handleError({message: 'Speech recognition is not supported in this browser.'}, 'Browser Not Supported');
                     return;
                 }
 
                 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-                recognition.lang = 'en-US'; // Assuming input is English for now
+                recognition.lang = 'en-US'; 
                 recognition.interimResults = false;
-                
-                // This is a simplified way to get the text. We're not actually sending the blob.
-                // In a real app, you'd send the audioBlob to a speech-to-text service.
-                // For this prototype, we'll just re-prompt the user to speak into the recognizer.
                 
                 recognition.onresult = async (event) => {
                     const speechToText = event.results[0][0].transcript;
@@ -87,8 +80,6 @@ export default function TranslatorPage() {
                 
                 recognition.start();
 
-                 // This part is a little bit of a hack for the prototype since we can't directly process the blob
-                 // without a server-side STT API call. We are starting a new recognition process.
                  toast({ title: "Processing audio...", description: "Please wait while we transcribe your speech." });
 
             };
@@ -108,28 +99,32 @@ export default function TranslatorPage() {
     
     const handleError = (error: any, title: string) => {
         console.error(title, error);
-        let description = 'An unknown error occurred. Please try again.';
         
-        // Check for specific SpeechRecognition errors
-        if (error && (error.error || error.name)) {
-            const errorCode = error.error || error.name;
-            if (errorCode === 'no-speech') {
-                title = 'No Speech Detected';
-                description = 'I didn\'t hear anything. Please make sure your microphone is working and try speaking again.';
-            } else if (errorCode === 'not-allowed' || errorCode === 'NotAllowedError') {
-                title = 'Microphone Access Denied';
-                description = 'Please allow microphone access in your browser settings to use the translator.';
-            }
-        } else if (error && error.message) {
-            description = error.message;
+        const errorCode = error?.error || error?.name;
+
+        if (errorCode === 'no-speech') {
+            toast({
+                title: 'No Speech Detected',
+                description: "I didn't hear anything. Please make sure your microphone is working and try again.",
+            });
+            setStatus('idle');
+            return;
         }
 
+        if (errorCode === 'not-allowed' || errorCode === 'NotAllowedError') {
+            toast({
+                title: 'Microphone Access Denied',
+                description: 'Please allow microphone access in your browser settings to use the translator.',
+                variant: 'destructive',
+            });
+        } else {
+             toast({
+                title: title,
+                description: error?.message || 'An unknown error occurred. Please try again.',
+                variant: 'destructive',
+            });
+        }
 
-        toast({
-            title: title,
-            description: description,
-            variant: 'destructive',
-        });
         setStatus('error');
         // Reset to idle after a delay
         setTimeout(() => setStatus('idle'), 4000);
