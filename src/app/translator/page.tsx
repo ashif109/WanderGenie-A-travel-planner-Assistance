@@ -54,6 +54,11 @@ export default function TranslatorPage() {
                 
                 // For simplicity, we are using browser's SpeechRecognition API for transcription
                 // A more robust solution might use a dedicated Speech-to-Text API
+                if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
+                    handleError({message: 'Speech recognition is not supported in this browser.'}, 'Browser Not Supported');
+                    return;
+                }
+
                 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
                 recognition.lang = 'en-US'; // Assuming input is English for now
                 recognition.interimResults = false;
@@ -76,8 +81,8 @@ export default function TranslatorPage() {
                     }
                 };
 
-                recognition.onerror = (event) => {
-                     handleError(event.error, 'Speech recognition failed');
+                recognition.onerror = (event: any) => {
+                     handleError(event, 'Speech recognition failed');
                 };
                 
                 recognition.start();
@@ -103,14 +108,27 @@ export default function TranslatorPage() {
     
     const handleError = (error: any, title: string) => {
         console.error(title, error);
+        let description = 'An unknown error occurred. Please try again.';
+        
+        // Check for specific SpeechRecognition errors
+        if (error.error === 'no-speech') {
+            title = 'No Speech Detected';
+            description = 'I didn\'t hear anything. Please make sure your microphone is working and try speaking again.';
+        } else if (error.error === 'not-allowed' || error.name === 'NotAllowedError') {
+            title = 'Microphone Access Denied';
+            description = 'Please allow microphone access in your browser settings to use the translator.';
+        } else if (error.message) {
+            description = error.message;
+        }
+
         toast({
             title: title,
-            description: error.message || 'An unknown error occurred. Please try again.',
+            description: description,
             variant: 'destructive',
         });
         setStatus('error');
         // Reset to idle after a delay
-        setTimeout(() => setStatus('idle'), 3000);
+        setTimeout(() => setStatus('idle'), 4000);
     }
 
     const getStatusInfo = () => {
@@ -226,3 +244,5 @@ declare global {
     webkitSpeechRecognition: any;
   }
 }
+
+    
