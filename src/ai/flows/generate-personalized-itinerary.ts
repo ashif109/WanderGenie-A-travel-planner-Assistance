@@ -44,6 +44,7 @@ const prompt = ai.definePrompt({
   name: 'generatePersonalizedItineraryPrompt',
   input: {schema: GeneratePersonalizedItineraryInputSchema},
   output: {schema: GeneratePersonalizedItineraryOutputSchema},
+  model: 'googleai/gemini-1.5-flash',
   prompt: `You are an expert travel planner and designer. Transform the user's request into a **highly aesthetic, stylish, and readable day-by-day travel itinerary** that people will actually enjoy reading.
 
 User Request:

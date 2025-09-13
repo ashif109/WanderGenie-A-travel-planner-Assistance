@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -46,6 +47,7 @@ const prompt = ai.definePrompt({
   name: 'generateDestinationHighlightsPrompt',
   input: {schema: GenerateDestinationHighlightsInputSchema},
   output: {schema: GenerateDestinationHighlightsOutputSchema},
+  model: 'googleai/gemini-1.5-flash',
   prompt: `You are an expert travel researcher and data analyst. For the given destination, provide a detailed and structured list of tourist attractions and regional highlights.
 
 Destination: {{{destination}}}
