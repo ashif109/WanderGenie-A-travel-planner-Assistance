@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useForm } from 'react-hook-form';
@@ -29,7 +30,7 @@ const formSchema = z.object({
     message: 'Tell us a bit more about your interests.',
   }),
   duration: z.number().min(1).max(30),
-  budget: z.enum(['budget-friendly', 'balanced', 'luxury']).default('balanced'),
+  budget: z.enum(['budget-friendly', 'balanced', 'luxury']),
   isSoloFemaleTraveler: z.boolean().default(false),
 });
 

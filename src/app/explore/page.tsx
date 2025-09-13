@@ -23,7 +23,11 @@ export default function ExplorePage() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const form = useForm<Inputs>();
+  const form = useForm<Inputs>({
+    defaultValues: {
+      destination: '',
+    },
+  });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setIsLoading(true);
