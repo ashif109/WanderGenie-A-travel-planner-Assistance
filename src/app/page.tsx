@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { generatePersonalizedItinerary, GeneratePersonalizedItineraryOutput } from '@/ai/flows/generate-personalized-itinerary';
 import { ItineraryForm, ItineraryFormValues } from '@/components/itinerary-form';
 import ItineraryDisplay from '@/components/itinerary-display';
@@ -83,7 +84,11 @@ export default function Home() {
         </div>
       </main>
       <footer className="text-center p-8 text-muted-foreground">
-        <p>Powered by WanderGenie</p>
+        <div className="flex justify-center gap-6">
+          <Link href="/" className="hover:text-primary">Home</Link>
+          <Link href="/documents" className="hover:text-primary">My Documents</Link>
+        </div>
+        <p className="mt-4">Powered by WanderGenie</p>
       </footer>
     </div>
   );

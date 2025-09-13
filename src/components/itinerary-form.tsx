@@ -18,7 +18,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { MapPin, CalendarDays, Star, Plane, Loader2, Wallet, Leaf, Gem, Briefcase } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { MapPin, CalendarDays, Star, Plane, Loader2, Wallet, Leaf, Gem, Briefcase, ShieldCheck } from 'lucide-react';
 
 const formSchema = z.object({
   destination: z.string().min(2, {
@@ -29,6 +30,7 @@ const formSchema = z.object({
   }),
   duration: z.number().min(1).max(30),
   budget: z.enum(['budget-friendly', 'balanced', 'luxury']).default('balanced'),
+  isSoloFemaleTraveler: z.boolean().default(false),
 });
 
 export type ItineraryFormValues = z.infer<typeof formSchema>;
@@ -46,6 +48,7 @@ export function ItineraryForm({ onSubmit, isLoading }: ItineraryFormProps) {
       preferences: '',
       duration: 7,
       budget: 'balanced',
+      isSoloFemaleTraveler: false,
     },
   });
 
@@ -165,6 +168,29 @@ export function ItineraryForm({ onSubmit, isLoading }: ItineraryFormProps) {
                     />
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isSoloFemaleTraveler"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 shadow-sm bg-muted/30">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base font-semibold flex items-center gap-2">
+                      <ShieldCheck className="h-5 w-5 text-primary"/>
+                      Solo Female Traveler?
+                    </FormLabel>
+                    <FormDescription className="text-sm text-muted-foreground">
+                      Select for safety-focused recommendations.
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />
