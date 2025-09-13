@@ -39,69 +39,69 @@ const ItineraryDisplay = ({ itineraryData }: ItineraryDisplayProps) => {
   
   return (
     <div className="animate-in fade-in-50 duration-500">
-      <Card className="mb-8 shadow-lg border-2 border-primary/10 bg-card">
+      <Card className="mb-8 shadow-xl border-2 border-primary/20 bg-card">
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-3xl font-headline">
-            <Rocket className="h-8 w-8 text-primary" />
-            Your Trip Plan
+          <CardTitle className="flex items-center gap-4 text-4xl font-headline font-bold">
+            <Rocket className="h-10 w-10 text-primary" />
+            Your Magical Trip Plan
           </CardTitle>
         </CardHeader>
       </Card>
-      <Accordion type="single" collapsible defaultValue="item-0" className="w-full space-y-4">
+      <Accordion type="single" collapsible defaultValue="item-0" className="w-full space-y-6">
         {itineraryData.map((dayData, index) => (
           <AccordionItem key={index} value={`item-${index}`} className="border-b-0">
-             <Card className="shadow-md border-2 border-primary/10 overflow-hidden">
-              <AccordionTrigger className="p-6 text-xl font-headline hover:no-underline [&[data-state=open]]:bg-accent">
-                <div className="flex items-center gap-4">
-                  <Badge className="bg-primary text-primary-foreground h-12 w-12 flex items-center justify-center rounded-full text-lg font-bold">
+             <Card className="shadow-lg border-2 border-primary/10 overflow-hidden transition-shadow hover:shadow-2xl">
+              <AccordionTrigger className="p-6 text-2xl font-headline font-bold hover:no-underline [&[data-state=open]]:bg-accent/50">
+                <div className="flex items-center gap-5">
+                  <Badge className="bg-primary text-primary-foreground h-14 w-14 flex items-center justify-center rounded-full text-2xl font-bold shadow-md">
                     {dayData.day.split(' ')[1]}
                   </Badge>
                   <div>
                      <div className="font-bold">{dayData.day}</div>
-                     <div className="text-sm font-normal text-muted-foreground">{format(parseISO(dayData.date), 'EEEE, MMMM d')}</div>
+                     <div className="text-base font-normal text-muted-foreground">{format(parseISO(dayData.date), 'EEEE, MMMM d')}</div>
                   </div>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
-                <div className="p-6 pt-0 space-y-6">
-                  <div className="space-y-4">
+                <div className="p-6 pt-2 space-y-8">
+                  <div className="space-y-6">
                       <div className="flex items-start gap-4">
-                          <Sunrise className="h-6 w-6 text-primary mt-1" />
+                          <Sunrise className="h-7 w-7 text-primary mt-1 flex-shrink-0" />
                           <div>
-                              <h4 className="font-headline font-semibold text-lg">Morning</h4>
-                              <p className="text-muted-foreground">{parseContent(dayData.morning)}</p>
+                              <h4 className="font-headline font-semibold text-xl mb-1">Morning</h4>
+                              <p className="text-muted-foreground text-base">{parseContent(dayData.morning)}</p>
                           </div>
                       </div>
                       <div className="flex items-start gap-4">
-                          <Sun className="h-6 w-6 text-primary mt-1" />
+                          <Sun className="h-7 w-7 text-primary mt-1 flex-shrink-0" />
                           <div>
-                              <h4 className="font-headline font-semibold text-lg">Afternoon</h4>
-                              <p className="text-muted-foreground">{parseContent(dayData.afternoon)}</p>
+                              <h4 className="font-headline font-semibold text-xl mb-1">Afternoon</h4>
+                              <p className="text-muted-foreground text-base">{parseContent(dayData.afternoon)}</p>
                           </div>
                       </div>
                       <div className="flex items-start gap-4">
-                          <Sunset className="h-6 w-6 text-primary mt-1" />
+                          <Sunset className="h-7 w-7 text-primary mt-1 flex-shrink-0" />
                           <div>
-                              <h4 className="font-headline font-semibold text-lg">Evening</h4>
-                              <p className="text-muted-foreground">{parseContent(dayData.evening)}</p>
+                              <h4 className="font-headline font-semibold text-xl mb-1">Evening</h4>
+                              <p className="text-muted-foreground text-base">{parseContent(dayData.evening)}</p>
                           </div>
                       </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Card className="bg-muted/50 p-4">
-                        <CardHeader className="p-0 pb-2">
-                           <CardTitle className="text-base font-headline flex items-center gap-2"><Bed className="h-5 w-5"/> Accommodation</CardTitle>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <Card className="bg-muted/30 p-5 rounded-lg">
+                        <CardHeader className="p-0 pb-3">
+                           <CardTitle className="text-lg font-headline flex items-center gap-3"><Bed className="h-6 w-6 text-primary"/> Accommodation</CardTitle>
                         </CardHeader>
-                        <CardContent className="p-0 text-sm text-muted-foreground">
+                        <CardContent className="p-0 text-base text-muted-foreground">
                           {parseContent(dayData.accommodation)}
                         </CardContent>
                     </Card>
-                    <Card className="bg-muted/50 p-4">
-                        <CardHeader className="p-0 pb-2">
-                          <CardTitle className="text-base font-headline flex items-center gap-2"><StickyNote className="h-5 w-5"/> Notes & Tips</CardTitle>
+                    <Card className="bg-muted/30 p-5 rounded-lg">
+                        <CardHeader className="p-0 pb-3">
+                          <CardTitle className="text-lg font-headline flex items-center gap-3"><StickyNote className="h-6 w-6 text-primary"/> Notes & Tips</CardTitle>
                         </CardHeader>
-                        <CardContent className="p-0 text-sm text-muted-foreground">
+                        <CardContent className="p-0 text-base text-muted-foreground">
                           {dayData.notes}
                         </CardContent>
                     </Card>

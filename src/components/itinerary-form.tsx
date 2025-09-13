@@ -50,13 +50,13 @@ export function ItineraryForm({ onSubmit, isLoading }: ItineraryFormProps) {
   });
 
   return (
-    <Card className="shadow-lg border-2 border-primary/10">
+    <Card className="shadow-xl border-2 border-primary/20 rounded-xl">
       <CardHeader>
-        <CardTitle className="flex items-center gap-3 text-3xl font-headline">
-          <Plane className="h-8 w-8 text-primary" />
+        <CardTitle className="flex items-center gap-4 text-3xl font-headline font-bold">
+          <Plane className="h-9 w-9 text-primary" />
           Plan Your Adventure
         </CardTitle>
-        <CardDescription>Tell us where you want to go and what you love to do.</CardDescription>
+        <CardDescription className="text-lg">Tell us where you want to go and what you love to do.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -66,7 +66,7 @@ export function ItineraryForm({ onSubmit, isLoading }: ItineraryFormProps) {
               name="destination"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center gap-2 text-lg">
+                  <FormLabel className="flex items-center gap-2 text-lg font-semibold">
                     <MapPin className="h-5 w-5" />
                     Destination
                   </FormLabel>
@@ -82,7 +82,7 @@ export function ItineraryForm({ onSubmit, isLoading }: ItineraryFormProps) {
               name="preferences"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center gap-2 text-lg">
+                  <FormLabel className="flex items-center gap-2 text-lg font-semibold">
                     <Star className="h-5 w-5" />
                     Interests & Preferences
                   </FormLabel>
@@ -102,8 +102,8 @@ export function ItineraryForm({ onSubmit, isLoading }: ItineraryFormProps) {
               control={form.control}
               name="budget"
               render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel className="flex items-center gap-2 text-lg"><Wallet className="h-5 w-5" /> Budget Style</FormLabel>
+                <FormItem className="space-y-4">
+                  <FormLabel className="flex items-center gap-2 text-lg font-semibold"><Wallet className="h-5 w-5" /> Budget Style</FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -114,8 +114,8 @@ export function ItineraryForm({ onSubmit, isLoading }: ItineraryFormProps) {
                         <FormControl>
                           <RadioGroupItem value="budget-friendly" id="budget-friendly" className="sr-only" />
                         </FormControl>
-                        <FormLabel htmlFor="budget-friendly" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
-                          <Leaf className="mb-3 h-6 w-6" />
+                        <FormLabel htmlFor="budget-friendly" className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground cursor-pointer peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary [&:has([data-state=checked])]:shadow-md">
+                          <Leaf className="mb-3 h-7 w-7" />
                           Budget
                         </FormLabel>
                       </FormItem>
@@ -123,8 +123,8 @@ export function ItineraryForm({ onSubmit, isLoading }: ItineraryFormProps) {
                         <FormControl>
                           <RadioGroupItem value="balanced" id="balanced" className="sr-only" />
                         </FormControl>
-                        <FormLabel htmlFor="balanced" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
-                          <Briefcase className="mb-3 h-6 w-6" />
+                        <FormLabel htmlFor="balanced" className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground cursor-pointer peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary [&:has([data-state=checked])]:shadow-md">
+                          <Briefcase className="mb-3 h-7 w-7" />
                           Balanced
                         </FormLabel>
                       </FormItem>
@@ -132,8 +132,8 @@ export function ItineraryForm({ onSubmit, isLoading }: ItineraryFormProps) {
                         <FormControl>
                            <RadioGroupItem value="luxury" id="luxury" className="sr-only" />
                         </FormControl>
-                        <FormLabel htmlFor="luxury" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
-                           <Gem className="mb-3 h-6 w-6" />
+                        <FormLabel htmlFor="luxury" className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground cursor-pointer peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary [&:has([data-state=checked])]:shadow-md">
+                           <Gem className="mb-3 h-7 w-7" />
                            Luxury
                         </FormLabel>
                       </FormItem>
@@ -148,12 +148,12 @@ export function ItineraryForm({ onSubmit, isLoading }: ItineraryFormProps) {
               name="duration"
               render={({ field: { value, onChange } }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center justify-between text-lg">
+                  <FormLabel className="flex items-center justify-between text-lg font-semibold">
                     <span className="flex items-center gap-2">
                       <CalendarDays className="h-5 w-5" />
                       Trip Duration
                     </span>
-                    <span className="font-bold text-primary">{value} {value > 1 ? 'days' : 'day'}</span>
+                    <span className="font-bold text-primary text-xl">{value} {value > 1 ? 'days' : 'day'}</span>
                   </FormLabel>
                   <FormControl>
                     <Slider
@@ -168,10 +168,10 @@ export function ItineraryForm({ onSubmit, isLoading }: ItineraryFormProps) {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isLoading} className="w-full text-lg py-6" size="lg">
+            <Button type="submit" disabled={isLoading} className="w-full text-xl py-7 font-bold" size="lg">
               {isLoading ? (
                 <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  <Loader2 className="mr-2 h-6 w-6 animate-spin" />
                   Crafting Your Trip...
                 </>
               ) : (
