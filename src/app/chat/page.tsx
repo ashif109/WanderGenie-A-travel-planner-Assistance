@@ -69,25 +69,27 @@ export default function ChatPage() {
       <Header />
       <main className="flex-grow container mx-auto px-4 py-12">
         <div className="max-w-3xl mx-auto">
-          <Card className="shadow-xl border-2 border-primary/20 rounded-xl h-[70vh] flex flex-col">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-4 text-3xl font-headline font-bold">
-                <Bot className="h-9 w-9 text-primary" />
+          <Card className="shadow-lg border-border/80 rounded-xl h-[70vh] flex flex-col">
+            <CardHeader className="border-b">
+              <CardTitle className="flex items-center gap-4 text-3xl font-headline font-bold text-foreground">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <Bot className="h-7 w-7 text-primary" />
+                </div>
                 Chat with WanderGenie
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex-grow flex flex-col gap-4 overflow-hidden">
+            <CardContent className="flex-grow flex flex-col gap-4 overflow-hidden p-6">
                 <ScrollArea className="flex-grow h-full pr-4 -mr-4">
                     <div className="space-y-6">
                     {messages.map((msg, index) => (
                         <div key={index} className={`flex items-start gap-4 ${msg.role === 'user' ? 'justify-end' : ''}`}>
                             {msg.role === 'assistant' && (
-                                <Avatar className="border-2 border-primary/50">
-                                    <AvatarFallback><Bot className="text-primary"/></AvatarFallback>
+                                <Avatar className="border-2 border-primary/20">
+                                    <AvatarFallback className="bg-primary/10"><Bot className="text-primary"/></AvatarFallback>
                                 </Avatar>
                             )}
-                            <div className={`rounded-2xl p-4 max-w-md ${msg.role === 'user' ? 'bg-primary text-primary-foreground rounded-br-none' : 'bg-muted rounded-bl-none'}`}>
-                                <p>{msg.content}</p>
+                            <div className={`rounded-xl p-4 max-w-md shadow-sm ${msg.role === 'user' ? 'bg-primary text-primary-foreground rounded-br-none' : 'bg-muted rounded-bl-none'}`}>
+                                <p className="text-base">{msg.content}</p>
                             </div>
                              {msg.role === 'user' && (
                                 <Avatar>
@@ -96,19 +98,21 @@ export default function ChatPage() {
                             )}
                         </div>
                     ))}
-                     {isLoading && !messages.some(m => m.role === 'assistant' && m.content === "...") && (
+                     {isLoading && (
                          <div className="flex items-start gap-4">
-                            <Avatar className="border-2 border-primary/50">
-                                <AvatarFallback><Bot className="text-primary"/></AvatarFallback>
+                            <Avatar className="border-2 border-primary/20">
+                                <AvatarFallback className="bg-primary/10"><Bot className="text-primary"/></AvatarFallback>
                             </Avatar>
-                            <div className="rounded-2xl p-4 max-w-md bg-muted rounded-bl-none">
-                                <Skeleton className="w-4 h-4 rounded-full animate-bounce" />
-                            </div>
+                             <div className="rounded-xl p-4 max-w-md bg-muted rounded-bl-none shadow-sm flex items-center space-x-2">
+                                <span className="h-2.5 w-2.5 bg-primary/50 rounded-full animate-pulse delay-0" />
+                                <span className="h-2.5 w-2.5 bg-primary/50 rounded-full animate-pulse delay-200" />
+                                <span className="h-2.5 w-2.5 bg-primary/50 rounded-full animate-pulse delay-400" />
+                             </div>
                         </div>
                      )}
                     </div>
               </ScrollArea>
-              <div className="mt-auto pt-4">
+              <div className="mt-auto pt-4 border-t">
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-center gap-4">
                     <FormField
@@ -117,13 +121,13 @@ export default function ChatPage() {
                       render={({ field }) => (
                         <FormItem className="flex-grow">
                           <FormControl>
-                            <Input placeholder="Ask me about your travel plans..." {...field} autoComplete="off" className="h-12 text-lg" />
+                            <Input placeholder="Ask me about your travel plans..." {...field} autoComplete="off" className="h-12 text-lg rounded-full" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" disabled={isLoading} size="icon" className="h-12 w-12 flex-shrink-0">
+                    <Button type="submit" disabled={isLoading} size="icon" className="h-12 w-12 flex-shrink-0 rounded-full">
                       {isLoading ? <Loader2 className="h-6 w-6 animate-spin" /> : <Send className="h-6 w-6" />}
                     </Button>
                   </form>

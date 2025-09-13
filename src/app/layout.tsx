@@ -1,6 +1,18 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
+import { Figtree, Lora } from 'next/font/google';
+import { cn } from '@/lib/utils';
+
+const fontFigtree = Figtree({
+  subsets: ['latin'],
+  variable: '--font-body',
+});
+
+const fontLora = Lora({
+  subsets: ['latin'],
+  variable: '--font-headline',
+});
 
 export const metadata: Metadata = {
   title: 'WanderGenie',
@@ -13,13 +25,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
-      </head>
-      <body className="font-body antialiased">
+    <html lang="en" suppressHydrationWarning>
+      <body className={cn("antialiased", fontFigtree.variable, fontLora.variable)}>
         {children}
         <Toaster />
       </body>

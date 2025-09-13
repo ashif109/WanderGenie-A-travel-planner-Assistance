@@ -26,8 +26,8 @@ export default function Header() {
     };
 
     if (isHomePage) {
-      handleScroll();
       window.addEventListener('scroll', handleScroll);
+      handleScroll(); // Check on initial render
       return () => {
         window.removeEventListener('scroll', handleScroll);
       };
@@ -40,32 +40,32 @@ export default function Header() {
     "sticky top-0 z-50 w-full border-b transition-colors duration-300",
     isHomePage && !scrolled
       ? "bg-black/20 border-transparent"
-      : "bg-navbar/95 backdrop-blur supports-[backdrop-filter]:bg-navbar/60 border-border"
+      : "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-border"
   );
   
   const navLinkClasses = cn(
-    "transition-colors",
+    "transition-colors text-sm font-medium",
     isHomePage && !scrolled
-      ? "text-white hover:text-white/80"
-      : "text-primary-foreground hover:text-primary-foreground/80"
+      ? "text-primary-foreground/80 hover:text-primary-foreground"
+      : "text-foreground/80 hover:text-foreground"
   );
   
   const activeNavLinkClasses = cn(
     isHomePage && !scrolled
-      ? "bg-white/10 hover:bg-white/20"
-      : "bg-background/10 hover:bg-background/20"
+      ? "bg-white/10 text-primary-foreground"
+      : "bg-primary/10 text-primary"
   );
 
   const logoClasses = cn(
-      "flex items-center gap-2 text-2xl font-bold font-headline transition-colors",
-       isHomePage && !scrolled ? "text-white hover:text-white/80" : "text-primary-foreground hover:text-primary-foreground/80"
+      "flex items-center gap-2 text-xl font-bold font-headline transition-colors",
+       isHomePage && !scrolled ? "text-white hover:text-white/90" : "text-foreground hover:text-foreground/90"
   );
 
   return (
     <header className={headerClasses}>
       <div className="container mx-auto flex h-16 items-center justify-between">
         <Link href="/" className={logoClasses}>
-          <Sparkles className="h-7 w-7" />
+          <Sparkles className="h-6 w-6" />
           WanderGenie
         </Link>
         <nav className="hidden md:flex items-center gap-2">

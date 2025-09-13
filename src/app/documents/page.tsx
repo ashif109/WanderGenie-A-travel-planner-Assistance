@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { FileText, Upload, Trash2 } from 'lucide-react';
+import { FileText, Upload, Trash2, File, Loader2 } from 'lucide-react';
 import Header from '@/components/header';
 
 interface Document {
@@ -38,7 +38,7 @@ export default function DocumentsPage() {
 
       setDocuments(prevDocs => [...prevDocs, ...newDocuments]);
       setIsUploading(false);
-    }, 1000);
+    }, 1500);
   };
 
   const handleDelete = (docId: string) => {
@@ -59,17 +59,20 @@ export default function DocumentsPage() {
        <Header />
        <main className="flex-grow container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
-            <Card className="shadow-xl border-2 border-primary/20 rounded-xl">
+            <Card className="shadow-lg border-border/80 rounded-xl">
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-4 text-3xl font-headline font-bold">
+                    <CardTitle className="flex items-center gap-4 text-3xl font-headline font-bold text-foreground">
+                        <div className="p-2 bg-primary/10 rounded-lg">
+                           <FileText className="h-7 w-7 text-primary"/>
+                        </div>
                         My Travel Documents
                     </CardTitle>
-                    <CardDescription className="text-lg">
+                    <CardDescription className="text-lg pt-1">
                         Keep your passport, tickets, and reservations safe in one place.
                     </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                    <div className="border-2 border-dashed rounded-lg p-8 text-center">
+                <CardContent className="space-y-8 p-6">
+                    <div className="border-2 border-dashed rounded-lg p-8 text-center transition-colors hover:border-primary/50 hover:bg-primary/5">
                         <label htmlFor="file-upload" className="cursor-pointer">
                             <div className="flex flex-col items-center justify-center">
                                 <Upload className="h-12 w-12 text-muted-foreground mb-4"/>
@@ -78,7 +81,12 @@ export default function DocumentsPage() {
                             </div>
                             <Input id="file-upload" type="file" multiple className="hidden" onChange={handleFileUpload} disabled={isUploading}/>
                         </label>
-                        {isUploading && <p className="mt-4 text-primary animate-pulse">Uploading...</p>}
+                        {isUploading && (
+                          <div className="flex items-center justify-center mt-4 text-primary">
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            <span>Uploading...</span>
+                          </div>
+                        )}
                     </div>
 
                     <div className="space-y-4">
@@ -86,22 +94,24 @@ export default function DocumentsPage() {
                         {documents.length > 0 ? (
                             <ul className="space-y-3">
                                 {documents.map(doc => (
-                                    <li key={doc.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border">
+                                    <li key={doc.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border transition-all hover:shadow-md hover:bg-muted">
                                         <div className="flex items-center gap-4">
-                                            <FileText className="h-8 w-8 text-primary"/>
+                                            <File className="h-8 w-8 text-primary"/>
                                             <div>
                                                 <a href={doc.url} target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline">{doc.name}</a>
-                                                <p className="text-sm text-muted-foreground">{formatBytes(doc.size)}</p>
+                                                <p className="text-sm text-muted-foreground">{formatBytes(doc.size)} &bull; {doc.type}</p>
                                             </div>
                                         </div>
                                         <Button variant="ghost" size="icon" onClick={() => handleDelete(doc.id)} aria-label="Delete document">
-                                            <Trash2 className="h-5 w-5 text-destructive"/>
+                                            <Trash2 className="h-5 w-5 text-destructive/70 hover:text-destructive"/>
                                         </Button>
                                     </li>
                                 ))}
                             </ul>
                         ) : (
-                            <p className="text-center text-muted-foreground py-8">You haven't uploaded any documents yet.</p>
+                            <div className="text-center text-muted-foreground py-8 border-2 border-dashed rounded-lg">
+                              <p>You haven't uploaded any documents yet.</p>
+                            </div>
                         )}
                     </div>
                 </CardContent>

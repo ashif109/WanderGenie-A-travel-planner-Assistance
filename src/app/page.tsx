@@ -7,7 +7,7 @@ import { ItineraryForm, ItineraryFormValues } from '@/components/itinerary-form'
 import ItineraryDisplay from '@/components/itinerary-display';
 import ItinerarySkeleton from '@/components/itinerary-skeleton';
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Route } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Header from '@/components/header';
 
@@ -51,9 +51,10 @@ export default function Home() {
               data-ai-hint={heroImage.imageHint}
             />
           )}
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-black/60" />
           <div className="relative z-10 flex flex-col items-center p-4">
             <div className="flex items-center gap-4 mb-4">
+               <Sparkles className="h-16 w-16 md:h-20 md:w-20 text-primary-foreground/80" />
               <h1 className="text-6xl md:text-8xl font-headline font-extrabold tracking-tight drop-shadow-lg">
                 WanderGenie
               </h1>
@@ -66,7 +67,7 @@ export default function Home() {
 
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
-            <div className="lg:sticky lg:top-12 lg:col-span-1">
+            <div className="lg:sticky lg:top-24 lg:col-span-1">
               <ItineraryForm onSubmit={handleFormSubmit} isLoading={isLoading} />
             </div>
             <div className="min-h-[600px] lg:col-span-2">
@@ -74,7 +75,7 @@ export default function Home() {
               {itinerary && <ItineraryDisplay itineraryData={itinerary.itinerary} />}
               {!isLoading && !itinerary && (
                  <div className="flex flex-col items-center justify-center h-full text-center p-10 border-2 border-dashed rounded-xl bg-card/50 text-card-foreground mt-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-20 w-20 text-muted-foreground/50 mb-6"><path d="M12.22 2h-4.44a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8.88z"/><path d="M15 2v6h6"/><path d="m14 11-4 4 2 2 4-4-2-2z"/></svg>
+                    <Route size={80} className="text-muted-foreground/50 mb-6" strokeWidth={1} />
                     <h3 className="text-3xl font-bold mb-3 font-headline">Your Itinerary Awaits</h3>
                     <p className="text-muted-foreground max-w-md text-lg">Fill out the form to generate your personalized travel plan and see the magic happen here.</p>
                 </div>

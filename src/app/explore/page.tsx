@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { generateDestinationHighlights, GenerateDestinationHighlightsOutput } from '@/ai/flows/generate-destination-highlights';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Globe, Loader2, Search } from 'lucide-react';
@@ -52,12 +52,17 @@ export default function ExplorePage() {
       <Header />
       <main className="flex-grow container mx-auto px-4 py-12">
         <div className="max-w-5xl mx-auto">
-          <Card className="shadow-xl border-2 border-primary/20 rounded-xl mb-12">
+          <Card className="shadow-lg border-border/80 rounded-xl mb-12">
             <CardHeader>
-              <CardTitle className="flex items-center gap-4 text-4xl font-headline font-bold">
-                <Globe className="h-10 w-10 text-primary" />
+              <CardTitle className="flex items-center gap-4 text-3xl font-headline font-bold text-foreground">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                    <Globe className="h-7 w-7 text-primary" />
+                </div>
                 Explore a Destination
               </CardTitle>
+               <CardDescription className="text-lg pt-1">
+                Virtually discover new places, from top attractions to local gems.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Form {...form}>
@@ -87,10 +92,13 @@ export default function ExplorePage() {
           </Card>
 
           {isLoading && (
-            <div className="space-y-8">
-               <Skeleton className="h-12 w-1/3" />
-               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                 {[...Array(6)].map((_, i) => <Skeleton key={i} className="h-64 rounded-xl" />)}
+            <div className="space-y-12">
+               <div className="space-y-4">
+                 <Skeleton className="h-10 w-1/3" />
+                 <Skeleton className="h-6 w-1/2" />
+               </div>
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                 {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-64 rounded-xl" />)}
                </div>
             </div>
           )}
