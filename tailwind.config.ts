@@ -15,6 +15,7 @@ export default {
         code: ['monospace'],
       },
       colors: {
+        navbar: 'hsl(207 44% 49%)',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

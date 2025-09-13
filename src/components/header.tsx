@@ -43,16 +43,16 @@ export default function Header() {
     "sticky top-0 z-50 w-full border-b transition-colors duration-300",
     isHomePage && !scrolled
       ? "bg-transparent border-transparent"
-      : "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-border"
+      : "bg-navbar/95 backdrop-blur supports-[backdrop-filter]:bg-navbar/60 border-border"
   );
   
   const navLinkBaseClasses = "transition-colors";
   const transparentHeaderLinkClasses = "text-white hover:bg-white/10 hover:text-white";
-  const solidHeaderLinkClasses = "text-foreground hover:text-foreground";
+  const solidHeaderLinkClasses = "text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground";
   
   const logoClasses = cn(
       "flex items-center gap-2 text-2xl font-bold font-headline transition-colors",
-       isHomePage && !scrolled ? "text-white hover:text-white/80" : "text-primary hover:text-primary/80"
+       isHomePage && !scrolled ? "text-white hover:text-white/80" : "text-primary-foreground hover:text-primary-foreground/80"
   );
 
   return (
@@ -74,7 +74,7 @@ export default function Header() {
                   navLinkBaseClasses,
                   isHomePage && !scrolled ? transparentHeaderLinkClasses : solidHeaderLinkClasses,
                   isActive && isHomePage && !scrolled && "bg-white/20 text-white",
-                  isActive && scrolled && "text-primary-foreground bg-primary"
+                  isActive && scrolled && "bg-background/20 text-white"
                 )}
               >
                 <Link href={link.href}>
