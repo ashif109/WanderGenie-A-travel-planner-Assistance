@@ -26,11 +26,15 @@ export default function Header() {
     };
 
     if (isHomePage) {
+      // Set initial state
+      handleScroll();
+      
       window.addEventListener('scroll', handleScroll);
       return () => {
         window.removeEventListener('scroll', handleScroll);
       };
     } else {
+      // On other pages, header is always "scrolled"
       setScrolled(true);
     }
   }, [isHomePage]);
@@ -42,9 +46,9 @@ export default function Header() {
       : "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-border"
   );
   
-  const navLinkClasses = cn(
-     isHomePage && !scrolled ? "text-white hover:bg-white/10 hover:text-white" : ""
-  );
+  const navLinkBaseClasses = "transition-colors";
+  const transparentHeaderLinkClasses = "text-white hover:bg-white/10 hover:text-white";
+  const solidHeaderLinkClasses = "text-foreground hover:text-foreground";
   
   const logoClasses = cn(
       "flex items-center gap-2 text-2xl font-bold font-headline transition-colors",
@@ -62,7 +66,17 @@ export default function Header() {
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
-              <Button key={link.href} asChild variant={isActive ? "secondary" : "ghost"} className={cn(navLinkClasses, isActive && scrolled ? "text-primary-foreground bg-primary" : "")}>
+              <Button 
+                key={link.href} 
+                asChild 
+                variant={isActive ? "secondary" : "ghost"} 
+                className={cn(
+                  navLinkBaseClasses,
+                  isHomePage && !scrolled ? transparentHeaderLinkClasses : solidHeaderLinkClasses,
+                  isActive && isHomePage && !scrolled && "bg-white/20 text-white",
+                  isActive && scrolled && "text-primary-foreground bg-primary"
+                )}
+              >
                 <Link href={link.href}>
                   <link.icon className="mr-2 h-4 w-4" />
                   {link.label}
