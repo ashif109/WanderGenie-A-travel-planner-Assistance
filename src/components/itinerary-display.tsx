@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Rocket, Bed, StickyNote, Palette, Sunrise, Sun, Sunset } from 'lucide-react';
+import { Rocket, Bed, StickyNote, Sunrise, Sun, Sunset } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { Badge } from './ui/badge';
 
@@ -15,7 +15,6 @@ interface ItineraryDay {
   evening: string;
   accommodation: string;
   notes: string;
-  visual_style_notes: string;
 }
 
 interface ItineraryDisplayProps {
@@ -37,15 +36,6 @@ const ItineraryDisplay = ({ itineraryData }: ItineraryDisplayProps) => {
   if (!itineraryData || itineraryData.length === 0) {
     return null;
   }
-
-  // A simple function to extract colors from visual_style_notes
-  const getColors = (note: string): string[] => {
-    const colorMatch = note.match(/#[0-9a-fA-F]{6}/g);
-    return colorMatch || [];
-  };
-
-  const colors = getColors(itineraryData[0].visual_style_notes);
-  const primaryColor = colors[0] || 'hsl(var(--primary))';
   
   return (
     <div className="animate-in fade-in-50 duration-500">
@@ -63,7 +53,7 @@ const ItineraryDisplay = ({ itineraryData }: ItineraryDisplayProps) => {
              <Card className="shadow-md border-2 border-primary/10 overflow-hidden">
               <AccordionTrigger className="p-6 text-xl font-headline hover:no-underline [&[data-state=open]]:bg-accent">
                 <div className="flex items-center gap-4">
-                  <Badge style={{ backgroundColor: primaryColor }} className="text-primary-foreground h-12 w-12 flex items-center justify-center rounded-full text-lg font-bold">
+                  <Badge className="bg-primary text-primary-foreground h-12 w-12 flex items-center justify-center rounded-full text-lg font-bold">
                     {dayData.day.split(' ')[1]}
                   </Badge>
                   <div>
@@ -116,15 +106,6 @@ const ItineraryDisplay = ({ itineraryData }: ItineraryDisplayProps) => {
                         </CardContent>
                     </Card>
                   </div>
-                  
-                   <Card className="bg-muted/50 p-4">
-                        <CardHeader className="p-0 pb-2">
-                          <CardTitle className="text-base font-headline flex items-center gap-2"><Palette className="h-5 w-5"/> Style Notes</CardTitle>
-                        </CardHeader>
-                        <CardContent className="p-0 text-sm text-muted-foreground">
-                          {dayData.visual_style_notes}
-                        </CardContent>
-                    </Card>
                 </div>
               </AccordionContent>
             </Card>

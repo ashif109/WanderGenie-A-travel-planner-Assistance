@@ -1,6 +1,4 @@
 
-// This file is machine-generated - edit at your own risk!
-
 'use server';
 
 /**
@@ -29,7 +27,6 @@ const ItineraryDaySchema = z.object({
     evening: z.string().describe('Evening (5pm-8pm) activities with time blocks, emojis, short description and highlights.'),
     accommodation: z.string().describe('Stylish name for accommodation and optional highlight.'),
     notes: z.string().describe('Secret spots, photo/selfie tips, local travel hacks, and safety tips.'),
-    visual_style_notes: z.string().describe('Suggested aesthetic formatting (e.g., emojis, colors, icons, typography) for UI display.')
 });
 
 const GeneratePersonalizedItineraryOutputSchema = z.object({
@@ -45,7 +42,7 @@ const prompt = ai.definePrompt({
   name: 'generatePersonalizedItineraryPrompt',
   input: {schema: GeneratePersonalizedItineraryInputSchema},
   output: {schema: GeneratePersonalizedItineraryOutputSchema},
-  prompt: `You are an expert travel planner and designer. Transform the user's request into a highly aesthetic, stylish, and readable day-by-day travel itinerary that people will actually enjoy reading.
+  prompt: `You are an expert travel planner and designer. Transform the user's request into a **highly aesthetic, stylish, and readable day-by-day travel itinerary** that people will actually enjoy reading.
 
 User Request:
 - Destination: {{{destination}}}
@@ -62,7 +59,6 @@ Follow these rules strictly:
     -   \`evening\`: (string) Same format as morning.
     -   \`accommodation\`: (string) Provide a stylish name and an optional highlight (e.g., "**The Grand Parisian**, Rooftop view of the Eiffel Tower").
     -   \`notes\`: (string) Include a mix of secret spots, photo/selfie tips, local travel hacks, and safety tips.
-    -   \`visual_style_notes\`: (string) Suggest aesthetic formatting for UI display (e.g., "Use 🏰, 🍷, 🖼️ emojis. Colors: #EAD8D7, #B79A9A. Icons: compass, camera. Font: Playfair Display").
 
 3.  **Content Features**:
     -   Break long paragraphs into short, punchy sentences.
@@ -80,8 +76,7 @@ Example of a single day object:
   "afternoon": "🖼️ 12:00–16:00: Explore **Louvre Museum**. Must-see: Mona Lisa, Venus de Milo. Secret tip: Visit Egyptian Antiquities wing first to avoid crowds.",
   "evening": "🌆 17:00–20:00: Stroll **Tuileries Garden**, enjoy sunset at Place de la Concorde. Dinner at Le Fumoir 🍷.",
   "accommodation": "**Hotel Le Meurice**, First Arrondissement",
-  "notes": "Take metro line 1 for quick access. Best photo spot: Arc de Triomphe in evening.",
-  "visual_style_notes": "Use elegant emojis 🖼️, 🍷. Colors: #D1C4E9, #9575CD. Font: Alegreya."
+  "notes": "Take metro line 1 for quick access. Best photo spot: Arc de Triomphe in evening."
 }
 `,
 });
