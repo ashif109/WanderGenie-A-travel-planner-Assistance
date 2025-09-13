@@ -86,6 +86,7 @@ export default function Home() {
       <footer className="text-center p-8 text-muted-foreground">
         <div className="flex justify-center gap-6">
           <Link href="/" className="hover:text-primary">Home</Link>
+          <Link href="/explore" className="hover:text-primary">Explore</Link>
           <Link href="/documents" className="hover:text-primary">My Documents</Link>
         </div>
         <p className="mt-4">Powered by WanderGenie</p>

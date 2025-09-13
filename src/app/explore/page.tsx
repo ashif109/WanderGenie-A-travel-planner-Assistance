@@ -1,0 +1,110 @@
+
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { generateDestinationHighlights, GenerateDestinationHighlightsOutput } from '@/ai/flows/generate-destination-highlights';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Globe, Home, Loader2, Search } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import ExploreDisplay from './explore-display';
+import { Skeleton } from '@/components/ui/skeleton';
+
+type Inputs = {
+  destination: string;
+};
+
+export default function ExplorePage() {
+  const [highlights, setHighlights] = useState<GenerateDestinationHighlightsOutput | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const form = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    setIsLoading(true);
+    setHighlights(null);
+    try {
+      const result = await generateDestinationHighlights(data);
+      setHighlights(result);
+    } catch (error) {
+      console.error('Error generating highlights:', error);
+      toast({
+        title: "Error Generating Highlights",
+        description: "Something went wrong. Please check your query or API setup.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen bg-background font-body">
+      <header className="p-4 border-b">
+        <div className="container mx-auto flex justify-between items-center">
+          <Link href="/" className="flex items-center gap-2 text-2xl font-bold font-headline text-primary hover:opacity-80">
+            WanderGenie
+          </Link>
+          <Button asChild variant="outline">
+            <Link href="/"><Home className="mr-2 h-4 w-4" /> Back to Planner</Link>
+          </Button>
+        </div>
+      </header>
+      <main className="flex-grow container mx-auto px-4 py-12">
+        <div className="max-w-5xl mx-auto">
+          <Card className="shadow-xl border-2 border-primary/20 rounded-xl mb-12">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-4 text-4xl font-headline font-bold">
+                <Globe className="h-10 w-10 text-primary" />
+                Explore a Destination
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-start gap-4">
+                  <FormField
+                    control={form.control}
+                    name="destination"
+                    rules={{ required: 'Destination is required' }}
+                    render={({ field }) => (
+                      <FormItem className="flex-grow">
+                        <FormControl>
+                          <div className="relative">
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                            <Input placeholder="e.g., Japan, Brazil, India..." {...field} className="pl-12 h-14 text-lg" />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" disabled={isLoading} className="h-14 text-lg px-8">
+                    {isLoading ? <Loader2 className="h-6 w-6 animate-spin" /> : 'Explore'}
+                  </Button>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+
+          {isLoading && (
+            <div className="space-y-8">
+               <Skeleton className="h-12 w-1/3" />
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                 {[...Array(6)].map((_, i) => <Skeleton key={i} className="h-64 rounded-xl" />)}
+               </div>
+            </div>
+          )}
+          {highlights && <ExploreDisplay highlights={highlights} />}
+        </div>
+      </main>
+      <footer className="text-center p-8 text-muted-foreground">
+        <p>Powered by WanderGenie</p>
+      </footer>
+    </div>
+  );
+}
